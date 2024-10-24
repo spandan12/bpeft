@@ -1,0 +1,26 @@
+_BASE_: "../base-prompt.yaml"
+RUN_N_TIMES: 1
+DATA:
+  NAME: "cifar100"
+  DATAPATH: "NotNeeded"  #TODO: need to specify here
+  NUMBER_CLASSES: 100
+  MULTILABEL: False
+  BATCH_SIZE: 64
+  FEATURE: "sup_vitb16_imagenet21k"
+MODEL:
+  TRANSFER_TYPE: "prompt"
+  TYPE: "vit"
+  SAVE_CKPT: True
+  PROMPT:
+    NUM_TOKENS: 10
+    DEEP: False
+    DROPOUT: 0.1
+    SAVE_FOR_EACH_EPOCH: True
+  MODEL_ROOT: "D_ALL/models"
+SOLVER:
+  BASE_LR: 0.1
+  WEIGHT_DECAY: 0.01
+  TOTAL_EPOCH: 50
+  FSTR: 2
+  FSVAL: 2
+  MODELTYPE: "ce"

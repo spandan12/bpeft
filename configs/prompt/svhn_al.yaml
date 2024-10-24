@@ -1,0 +1,31 @@
+_BASE_: "../base-prompt.yaml"
+RUN_N_TIMES: 1
+DATA:
+  NAME: "svhn"
+  DATAPATH: "NotNeeded"  #TODO: need to specify here
+  NUMBER_CLASSES: 10
+  MULTILABEL: False
+  BATCH_SIZE: 64
+  FEATURE: "sup_vitb16_imagenet21k"
+MODEL:
+  TRANSFER_TYPE: "prompt"
+  TYPE: "vit"
+  SAVE_CKPT: False
+  PROMPT:
+    NUM_TOKENS: 200
+    DEEP: False
+    DROPOUT: 0.1
+    SAVE_FOR_EACH_EPOCH: True
+  MODEL_ROOT: "D_ALL/models"
+SOLVER:
+  BASE_LR: 0.1
+  WEIGHT_DECAY: 0.01
+  TOTAL_EPOCH: 50
+  STRATEGY: "class_and_entropy"
+  INIT_POOL: 200
+  SEL_AL: 50
+  NUM_AL: 5
+  INIT_FILE_NAME: "svhn10_num_labels_200.npy"
+
+
+DBG: False
