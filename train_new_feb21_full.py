@@ -25,7 +25,7 @@ from src.utils.file_io import PathManager
 from D_ALL.data_loaders import get_loaders_cif100_deep 
 from D_ALL.data_loaders import get_loaders_svhn_deep
 from D_ALL.data_loaders import get_loaders_cifar10_deep
-from D_ALL.data_loader_tiny import get_loaders_tiny_deep
+
 from launch import default_argument_parser, logging_train_setup
 warnings.filterwarnings("ignore")
 

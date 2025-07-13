@@ -418,15 +418,7 @@ class Trainer():
             if self.cfg.SOLVER.MODELTYPE == 'ce':
                 alpha = outputs
             elif self.cfg.SOLVER.MODELTYPE == 'evidential':
-                if self.cfg.SOLVER.HYP_A > 50:
-                    alpha = evidence + 1
-                else:
-                    num_size = evidence.shape[0]
-                    min_evidence = torch.min(evidence,1).values
-                    numerator = evidence - min_evidence.reshape(num_size,1)
-                    denominator = min_evidence.reshape(num_size,1)
-                    base_rate = (numerator/denominator)**self.cfg.SOLVER.HYP_A
-                    alpha = evidence + (base_rate * self.cfg.DATA.NUMBER_CLASSES )
+                alpha = evidence + 1
 
             S = torch.sum(alpha, dim=1, keepdim=True)
             probabilities = (alpha/S).to(targets.device)
@@ -488,15 +480,7 @@ class Trainer():
             if self.cfg.SOLVER.MODELTYPE == 'ce':
                 alpha = outputs # The logits
             elif self.cfg.SOLVER.MODELTYPE == 'evidential':
-                if self.cfg.SOLVER.HYP_A > 50:
-                    alpha = evidence + 1
-                else:
-                    num_size = evidence.shape[0]
-                    min_evidence = torch.min(evidence,1).values
-                    numerator = evidence - min_evidence.reshape(num_size,1)
-                    denominator = min_evidence.reshape(num_size,1)
-                    base_rate = (numerator/denominator)**self.cfg.SOLVER.HYP_A
-                    alpha = evidence + (base_rate * self.cfg.DATA.NUMBER_CLASSES )
+                alpha = evidence + 1
             
             S = torch.sum(alpha, dim=1, keepdim=True)
             probabilities = (alpha/S).to(targets.device)
