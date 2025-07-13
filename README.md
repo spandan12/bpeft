@@ -4,11 +4,21 @@
 
 2. Run the following command to install all the environment. It requires `conda` and `pip`
 
-    ``` sh env_setup.sh ```
+    - Create conda environment using python of 3.10.
+        
+         ``` conda create -n prompt python=3.10 ```
 
-    Activate the environment
+    - Activate the environment to install requirements inside the environment.
+        
+        ``` conda activate prompt ```
 
-    ``` conda activate prompt ```
+    - Install torch with cuda. 
+        
+        ``` python3 -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 ```
+
+    - Install all the necessary requirements.
+        
+        ``` python3 -m pip install tqdm pandas matplotlib seaborn scikit-learn scipy simplejson termcolor iopath fvcore timm==0.4.12 ml_collections```
 
 3. Install the pre-trained models
 
