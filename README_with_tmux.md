@@ -38,12 +38,28 @@
 
 4. Run the following command to get started
 
-```
-Make sure to change ds_name to change dataset. Every new run requires to set new location. Make sure to change location. 
- ```    
+    ```
+    Make sure to change ds_name to change dataset. Every new run requires to set new location. Make sure to change location. 
+    ```    
 
+    - Start new tmux window
 
-`CUDA_VISIBLE_DEVICES=<device_number> sh run.s`
+        `tmux new`
+
+    - Run the command to start training
+
+        `CUDA_VISIBLE_DEVICES=<device_number> sh run.sh`
+    
+    - To exit the tmux window, 
+
+        First press Keys `Control` + `B`
+
+        Then press key `D` only
+        
+    - To re-enter tmux window, use tmux_window_number=0 if only one window present.
+
+        tmux a -t <tmux_window_number>
+
 
 
 6. Run the following command to get post calibration ECE and reliability plot
