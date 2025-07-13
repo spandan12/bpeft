@@ -21,7 +21,7 @@
 
     wget -O imagenet21k_ViT-B_16.npz https://storage.googleapis.com/vit_models/imagenet21k/ViT-B_16.npz
 
-    cd ../..
+    cd ../../
     ```
 
 4. The few-shot data split for cifar10 and cifar100 are available in `D_ALL/fsDataset`. Similar split can be created for other datasets using script in `D_ALL/make_fs_initial_labeled_pool.py`

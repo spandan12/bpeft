@@ -1,10 +1,9 @@
 #!/bin/bash
-ds_name="cifar100"
-kl_val="0.0"
+ds_name="cifar10"
+kl_val="0.1"
 seed="1"
 fstr="1"
 modeltype="evidential"
-hypa="100"
 conda activate prompt
 
 CUDA_VISIBLE_DEVICES=0 python3 train_new_feb21_full.py \
@@ -13,5 +12,4 @@ CUDA_VISIBLE_DEVICES=0 python3 train_new_feb21_full.py \
     SOLVER.KL_VAL ${kl_val} \
     SOLVER.MODELTYPE ${modeltype} \
     SOLVER.FSTR ${fstr} \
-    SOLVER.HYP_A ${hypa} \
     OUTPUT_DIR "logs/"${modeltype}"_"${fstr}"_FSTR_"${ds_name}"_kl_"${kl_val}"/seed"${seed}

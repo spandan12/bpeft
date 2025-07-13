@@ -2,38 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-base_path = <path>
-data_in_path = f'{base_path}/_full_matrix_seed.csv'
-m_value = 1.5
-
-df_in = pd.read_csv(data_in_path, index_col=False)
-
-IN_data = df_in.to_numpy()
-
-predicted_value = IN_data[:, 0]
-gt_value = IN_data[:, 1]
-vacuity=IN_data[:, 2]
-evidence = IN_data[:, 4:] 
-num_size = evidence.shape[0]
-min_evidence = np.min(evidence,1)
-alpha = evidence + (1)
-
-
-
-min_evidence = np.min(evidence,1)
-numerator = evidence - min_evidence.reshape(num_size,1)
-denominator = min_evidence.reshape(num_size,1)
-base_rate = (numerator/denominator)**(m_value)
-alpha = evidence + (base_rate * 100)
-
-row_sums_plus1 = np.sum(alpha, axis=1, keepdims=True)
-
-# Step 3: Normalize each row by its respective sum
-normalized_evidence = alpha / row_sums_plus1
-
-# Get the maximum value of each row
-max_values = np.max(normalized_evidence, axis=1, keepdims=True)  # Shape: (10000, 1)
-
 def calculate_ece(
     max_probs, 
     true_classes,
@@ -100,7 +68,61 @@ def plot_reliability_diagrams(save_loc, title, true_classes, predicted_probs, pr
     plt.clf()
     plt.close()
 
+base_path = "./logs/evidential_1_FSTR_cifar10_kl_0.1/seed1/cifar10/sup_vitb16_imagenet21k/lr0.1_wd0.01/run1"
+data_in_path = f'{base_path}/_full_matrix_seed.csv'
+m_value = 1.5
+
+df_in = pd.read_csv(data_in_path, index_col=False)
+
+IN_data = df_in.to_numpy()
+
+predicted_value = IN_data[:, 0]
+gt_value = IN_data[:, 1]
+vacuity=IN_data[:, 2]
+evidence = IN_data[:, 4:] 
+num_size = evidence.shape[0]
+min_evidence = np.min(evidence,1)
+alpha = evidence + (1)
 accuracy = np.sum(predicted_value==gt_value)/(gt_value.shape[0])*100
+row_sums_plus1 = np.sum(alpha, axis=1, keepdims=True)
+
+# Step 3: Normalize each row by its respective sum
+normalized_evidence = alpha / row_sums_plus1
+
+max_values = np.max(normalized_evidence, axis=1, keepdims=True)  # Shape: (10000, 1)
+
+ece = calculate_ece(
+    max_probs=max_values, 
+    true_classes=gt_value,
+    predicted_classes=predicted_value, 
+    n_bins=10)
+
+plot_reliability_diagrams(save_loc=f'{base_path}/pre_ece.png', title = f'Accuracy: {accuracy:.3f} ECE: {ece:.3f}',
+                          true_classes = gt_value,
+                          predicted_probs = max_values, 
+                          predicted_classes = predicted_value,
+                          n_bins = 10)
+
+print(f'Before BPEFT, Accuracy: {accuracy:.3f} ECE: {ece:.3f}')
+print(f'Reliability plot saved in {base_path}/pre_ece.png')
+
+min_evidence = np.min(evidence,1)
+numerator = evidence - min_evidence.reshape(num_size,1)
+denominator = min_evidence.reshape(num_size,1)
+base_rate = (numerator/denominator)**(m_value)
+alpha = evidence + (base_rate * 100)
+
+row_sums_plus1 = np.sum(alpha, axis=1, keepdims=True)
+
+# Step 3: Normalize each row by its respective sum
+normalized_evidence = alpha / row_sums_plus1
+
+# Get the maximum value of each row
+max_values = np.max(normalized_evidence, axis=1, keepdims=True)  # Shape: (10000, 1)
+
+
+
+
 
 ece = calculate_ece(
     max_probs=max_values, 
@@ -114,5 +136,5 @@ plot_reliability_diagrams(save_loc=f'{base_path}/post_ece.png', title = f'Accura
                           predicted_classes = predicted_value,
                           n_bins = 10)
 
-print(f'Accuracy: {accuracy:.3f} ECE: {ece:.3f}')
+print(f'After BPEFT, Accuracy: {accuracy:.3f} ECE: {ece:.3f}')
 print(f'Reliability plot saved in {base_path}/post_ece.png')
